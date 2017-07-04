@@ -31,27 +31,26 @@ book_data = {
 	'channel':'wxpub'
 }
 
-r = requests.post('http://m.01zhuanche.com/touch/order/bookingCar', headers=header, data=book_data).json()
-
-print r['errmsg']
-
-if r['data']['returnCode'] == '0':
-	print 'Order success! pooling...'
-	print 'Order time:'
-	print time.localtime(float(curr_ime))
-
-cancel_data={
-	'orderNo':r['data']['orderNo'],
-	'orderId':r['data']['orderId'],
-	'cancelType':'11'
-}
-
-data = {
-	'orderNo':r['data']['orderNo'],
-	'channel':'wxpub'
-}
-
 for i in range(1, 200):
+	r = requests.post('http://m.01zhuanche.com/touch/order/bookingCar', headers=header, data=book_data).json()
+	#print r['errmsg']
+	print r
+	if r['data']['returnCode'] == '0':
+		print 'Order success! pooling...'
+		print 'Order time:'
+		print time.localtime(float(curr_ime))
+
+	cancel_data={
+		'orderNo':r['data']['orderNo'],
+		'orderId':r['data']['orderId'],
+		'cancelType':'11'
+	}
+
+	data = {
+		'orderNo':r['data']['orderNo'],
+		'channel':'wxpub'
+	}
+
 	for j in range(1, 41):
 		r = requests.post('http://m.01zhuanche.com/touch/order/pollingOrder', headers=header, data=data).json()
 		if r['data']['returnCode'] == 0:
@@ -65,7 +64,7 @@ for i in range(1, 200):
 			print driver_name
 			print color
 			os._exit(0)
-		print 'no car, pooling...'
+		print j, 'no car, pooling...'
 		time.sleep(3)
 	requests.post('http://m.01zhuanche.com/touch/order/cancelOrderBeforeAccepted', headers=header, data=cancel_data).json()
 
