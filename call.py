@@ -38,7 +38,7 @@ for i in range(1, 200):
 	if r['data']['returnCode'] == '0':
 		print 'Order success! pooling...'
 		print 'Order time:'
-		print time.localtime(float(curr_ime))
+		print time.localtime(float(curr_time))
 
 	cancel_data={
 		'orderNo':r['data']['orderNo'],
@@ -46,13 +46,14 @@ for i in range(1, 200):
 		'cancelType':'11'
 	}
 
-	data = {
+	pool_data = {
 		'orderNo':r['data']['orderNo'],
 		'channel':'wxpub'
 	}
 
 	for j in range(1, 41):
-		r = requests.post('http://m.01zhuanche.com/touch/order/pollingOrder', headers=header, data=data).json()
+		r = requests.post('http://m.01zhuanche.com/touch/order/pollingOrder', headers=header, data=pool_data).json()
+		print r
 		if r['data']['returnCode'] == 0:
 			print 'success'
 			car_number = r['data']['order']['licensePlates']
