@@ -54,7 +54,7 @@ for i in range(1, 200):
 	for j in range(1, 41):
 		r = requests.post('http://m.01zhuanche.com/touch/order/pollingOrder', headers=header, data=pool_data).json()
 		print r
-		if r['data']['returnCode'] == 0:
+		if r['data']['returnCode'] == '0':
 			print 'success'
 			car_number = r['data']['order']['licensePlates']
 			driver_phone = r['data']['order']['phone']
