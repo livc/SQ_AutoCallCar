@@ -14,7 +14,8 @@ header = {
 	'Host':'m.01zhuanche.com',
 	'Origin':'http://m.01zhuanche.com',
 	'Referer':'http://m.01zhuanche.com/touch/h5Home/wxpub/n_jishi',
-	'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36',
+	#'User-Agent':'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36',
+	'User-Agent':'Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3',
 	'X-Requested-With':'XMLHttpRequest'
 }
 
@@ -32,7 +33,11 @@ book_data = {
 }
 
 for i in range(1, 200):
-	r = requests.post('http://m.01zhuanche.com/touch/order/bookingCar', headers=header, data=book_data).json()
+	try:
+		r = requests.post('http://m.01zhuanche.com/touch/order/bookingCar', headers=header, data=book_data).json()
+	except:
+		print 'cookie过期，请重新获取'
+		break
 	#print r['errmsg']
 	print r
 	if r['data']['returnCode'] == '0':
@@ -66,6 +71,6 @@ for i in range(1, 200):
 			print color
 			os._exit(0)
 		print j, 'no car, pooling...'
-		time.sleep(3)
+		time.sleep(5)
 	requests.post('http://m.01zhuanche.com/touch/order/cancelOrderBeforeAccepted', headers=header, data=cancel_data).json()
 
